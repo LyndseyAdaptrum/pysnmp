@@ -137,7 +137,7 @@ class CommandResponderBase(object):
         try:
             self.handleMgmtOperation(snmpEngine, stateReference,
                                      contextName, PDU,
-                                     (self.__verifyAccess, snmpEngine))
+                                     (self.__verifyAccess, snmpEngine), securityName)
 
         # SNMPv2 SMI exceptions
         except pysnmp.smi.error.GenError:
@@ -274,12 +274,12 @@ class GetCommandResponder(CommandResponderBase):
 
     # rfc1905: 4.2.1
     def handleMgmtOperation(self, snmpEngine, stateReference,
-                            contextName, PDU, acInfo):
+                            contextName, PDU, acInfo, securityName):
         (acFun, acCtx) = acInfo
         # rfc1905: 4.2.1.1
         mgmtFun = self.snmpContext.getMibInstrum(contextName).readVars
         self.sendVarBinds(snmpEngine, stateReference, 0, 0,
-                          mgmtFun(v2c.apiPDU.getVarBinds(PDU), (acFun, acCtx)))
+                          mgmtFun(v2c.apiPDU.getVarBinds(PDU), (acFun, acCtx), securityName))
         self.releaseStateInformation(stateReference)
 
 

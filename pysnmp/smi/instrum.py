@@ -13,7 +13,7 @@ __all__ = ['AbstractMibInstrumController', 'MibInstrumController']
 
 
 class AbstractMibInstrumController(object):
-    def readVars(self, varBinds, acInfo=(None, None)):
+    def readVars(self, varBinds, acInfo=(None, None), securityName=None):
         raise error.NoSuchInstanceError(idx=0)
 
     def readNextVars(self, varBinds, acInfo=(None, None)):
@@ -246,7 +246,7 @@ class MibInstrumController(AbstractMibInstrumController):
                     del origTraceback
         return outputVarBinds
 
-    def readVars(self, varBinds, acInfo=(None, None)):
+    def readVars(self, varBinds, acInfo=(None, None), securityName=None):
         return self.flipFlopFsm(self.fsmReadVar, varBinds, acInfo)
 
     def readNextVars(self, varBinds, acInfo=(None, None)):

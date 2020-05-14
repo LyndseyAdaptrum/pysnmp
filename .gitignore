@@ -26,3 +26,6 @@ venv*
 
 # Tox
 .tox/
+
+# VS code settings files
+.vscode/
