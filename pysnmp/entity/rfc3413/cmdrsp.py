@@ -25,7 +25,7 @@ class CommandResponderBase(object):
         self.__pendingReqs = {}
 
     def handleMgmtOperation(self, snmpEngine, stateReference, contextName,
-                            PDU, acInfo):
+                            PDU, acInfo, securityName=None):
         pass
 
     def close(self, snmpEngine):
@@ -274,7 +274,7 @@ class GetCommandResponder(CommandResponderBase):
 
     # rfc1905: 4.2.1
     def handleMgmtOperation(self, snmpEngine, stateReference,
-                            contextName, PDU, acInfo, securityName):
+                            contextName, PDU, acInfo, securityName=None):
         (acFun, acCtx) = acInfo
         # rfc1905: 4.2.1.1
         mgmtFun = self.snmpContext.getMibInstrum(contextName).readVars
@@ -288,7 +288,7 @@ class NextCommandResponder(CommandResponderBase):
 
     # rfc1905: 4.2.2
     def handleMgmtOperation(self, snmpEngine, stateReference,
-                            contextName, PDU, acInfo):
+                            contextName, PDU, acInfo, securityName=None):
         (acFun, acCtx) = acInfo
         # rfc1905: 4.2.2.1
         mgmtFun = self.snmpContext.getMibInstrum(contextName).readNextVars
@@ -311,7 +311,7 @@ class BulkCommandResponder(CommandResponderBase):
 
     # rfc1905: 4.2.3
     def handleMgmtOperation(self, snmpEngine, stateReference,
-                            contextName, PDU, acInfo):
+                            contextName, PDU, acInfo, securityName=None):
         (acFun, acCtx) = acInfo
         nonRepeaters = v2c.apiBulkPDU.getNonRepeaters(PDU)
         if nonRepeaters < 0:
@@ -356,7 +356,7 @@ class SetCommandResponder(CommandResponderBase):
 
     # rfc1905: 4.2.5
     def handleMgmtOperation(self, snmpEngine, stateReference,
-                            contextName, PDU, acInfo):
+                            contextName, PDU, acInfo, securityName=None):
         (acFun, acCtx) = acInfo
         mgmtFun = self.snmpContext.getMibInstrum(contextName).writeVars
         # rfc1905: 4.2.5.1-13
