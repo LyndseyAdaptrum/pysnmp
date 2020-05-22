@@ -16,10 +16,10 @@ class AbstractMibInstrumController(object):
     def readVars(self, varBinds, acInfo=(None, None), securityName=None):
         raise error.NoSuchInstanceError(idx=0)
 
-    def readNextVars(self, varBinds, acInfo=(None, None)):
+    def readNextVars(self, varBinds, acInfo=(None, None), securityName=None):
         raise error.EndOfMibViewError(idx=0)
 
-    def writeVars(self, varBinds, acInfo=(None, None)):
+    def writeVars(self, varBinds, acInfo=(None, None), securityName=None):
         raise error.NoSuchObjectError(idx=0)
 
 
@@ -249,8 +249,8 @@ class MibInstrumController(AbstractMibInstrumController):
     def readVars(self, varBinds, acInfo=(None, None), securityName=None):
         return self.flipFlopFsm(self.fsmReadVar, varBinds, acInfo)
 
-    def readNextVars(self, varBinds, acInfo=(None, None)):
+    def readNextVars(self, varBinds, acInfo=(None, None), securityName=None):
         return self.flipFlopFsm(self.fsmReadNextVar, varBinds, acInfo)
 
-    def writeVars(self, varBinds, acInfo=(None, None)):
+    def writeVars(self, varBinds, acInfo=(None, None), securityName=None):
         return self.flipFlopFsm(self.fsmWriteVar, varBinds, acInfo)

@@ -294,7 +294,7 @@ class NextCommandResponder(CommandResponderBase):
         mgmtFun = self.snmpContext.getMibInstrum(contextName).readNextVars
         varBinds = v2c.apiPDU.getVarBinds(PDU)
         while True:
-            rspVarBinds = mgmtFun(varBinds, (acFun, acCtx))
+            rspVarBinds = mgmtFun(varBinds, (acFun, acCtx), securityName)
             try:
                 self.sendVarBinds(snmpEngine, stateReference, 0, 0, rspVarBinds)
             except error.StatusInformation:
@@ -334,13 +334,13 @@ class BulkCommandResponder(CommandResponderBase):
         mgmtFun = self.snmpContext.getMibInstrum(contextName).readNextVars
 
         if N:
-            rspVarBinds = mgmtFun(reqVarBinds[:N], (acFun, acCtx))
+            rspVarBinds = mgmtFun(reqVarBinds[:N], (acFun, acCtx), securityName)
         else:
             rspVarBinds = []
 
         varBinds = reqVarBinds[-R:]
         while M and R:
-            rspVarBinds.extend(mgmtFun(varBinds, (acFun, acCtx)))
+            rspVarBinds.extend(mgmtFun(varBinds, (acFun, acCtx), securityName))
             varBinds = rspVarBinds[-R:]
             M -= 1
 
@@ -363,7 +363,7 @@ class SetCommandResponder(CommandResponderBase):
         try:
             self.sendVarBinds(snmpEngine, stateReference, 0, 0,
                               mgmtFun(v2c.apiPDU.getVarBinds(PDU),
-                                      (acFun, acCtx)))
+                                      (acFun, acCtx), securityName))
             self.releaseStateInformation(stateReference)
         except (pysnmp.smi.error.NoSuchObjectError,
                 pysnmp.smi.error.NoSuchInstanceError):
